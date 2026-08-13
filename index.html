@@ -1,52 +1,386 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio de Mapas</title>
+
+    <title>Mapas interactivos</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f7;
+            color: #222;
+            line-height: 1.5;
         }
-        h1 {
-            color: #2c3e50;
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #d9dde2;
+            padding: 42px 24px;
         }
-        .mapa-link {
-            display: block;
-            margin: 15px 0;
-            padding: 15px;
-            background-color: #af1731;
-            color: white;
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #62676d;
+            font-size: 1.05rem;
+            max-width: 700px;
+        }
+        
+        .institutional-logo {
+            width: 100%;
+            max-width: 330px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .section-title {
+            margin-bottom: 24px;
+        }
+
+        .section-title h2 {
+            font-size: 1.35rem;
+            margin-bottom: 5px;
+        }
+
+        .section-title p {
+            color: #6b7075;
+        }
+
+        /* =========================
+           MAP CARDS
+        ========================= */
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .map-card {
+            background: #ffffff;
+            border: 1px solid #dfe2e5;
+            border-radius: 10px;
+            padding: 28px;
+            min-height: 390px;
+
+            display: flex;
+            flex-direction: column;
+
             text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            width: 300px;
-            text-align: center;
+            color: inherit;
+
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease,
+                border-color 0.15s ease;
         }
-        .mapa-link:hover {
-            background-color: #b2b2b1;
+        .map-description {
+            color: #64696f;
+            margin-bottom: 24px;
+            text-align: justify;
         }
+        .map-card.active:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+            border-color: #aeb4ba;
+        }
+
+        .map-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .map-card p {
+            color: #64696f;
+            margin-bottom: 24px;
+        }
+
+        .map-link {
+            margin-top: auto;
+            font-weight: 600;
+        }
+
+        .tag {
+            display: inline-block;
+            align-self: flex-start;
+
+            font-size: 0.75rem;
+            font-weight: 600;
+
+            padding: 4px 9px;
+            margin-bottom: 18px;
+
+            border-radius: 20px;
+
+            background: #0fbd6c;
+            color: #50555a;
+
+            border: 1px solid #dfe2e5;
+            box-shadow: 0 0 10px rgba(25, 135, 84, 0.5);
+
+        }
+
+        .disabled {
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 24px;
+
+            border-top: 1px solid #d9dde2;
+
+            color: #74797e;
+            font-size: 0.85rem;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 34px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+            .institutional-logo-container {
+                width: 100%;
+                display: flex;
+                justify-content: center;    
+            }
+            .institutional-logo {
+                width: 280px;
+                max-width: 100%;
+            }
+
+            main {
+                padding: 32px 20px;
+            }
+
+            header h1 {
+                font-size: 1.65rem;
+                text-align: center;
+            }
+            header p {
+                text-align: center;
+            }
+            .map-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-card {
+                min-height: 300px;
+            }
+	    }
     </style>
+
 </head>
+
 <body>
 
-    <h1>Portafolio de Análisis Territorial</h1>
-    <p>Bienvenido. Aquí puedes explorar los diferentes mapas web interactivos:</p>
+    <!-- =========================
+         HEADER
+    ========================== -->
 
-    <a href="mapa_uno/index.html" class="mapa-link" target="_blank">
-        Mapa INP Yucatán
-    </a>
+    <header>
 
-    <a href="pd_mun/index.html" class="mapa-link" target="_blank">
-        Mapa Población Desocupada (%)
-    </a>
+        <div class="header-content">
 
-    <a href="empresas_grandes_yuc/index.html" class="mapa-link" target="_blank">
-        Mapa Empresas Grandes Yucatán    
-    </a>
+            <div class="header-text">
+                <h1>Mapas interactivos</h1>
+
+                <p>
+                    Herramientas de consulta y visualización de información
+                    económica, social y territorial.
+                </p>
+            </div>
+
+            <div class="institutional-logo-container">
+                
+                <img
+                    src="img/sety_horizontal.png"
+                    alt="Secretaría de Economía y Trabajo de Yucatán"
+                    class="institutional-logo"
+                >
+
+            </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main>
+
+        <div class="section-title">
+            <h2>Mapas disponibles</h2>
+            <p>
+                Seleccione un mapa para iniciar la consulta.
+            </p>
+        </div>
+
+
+        <div class="map-grid">
+
+            <!-- =========================
+                MAPA 1
+            ========================== -->
+
+            <a
+                class="map-card active"
+                href="mapa_uno/index.html"
+            >
+
+                <span class="tag">
+                    Disponible
+                </span>
+
+                <h3>
+                    Índice de Necesidad Prioritaria
+                </h3>
+
+                <p class = "map-description">
+                    Identifica los municipios con mayor necesidad y potencial
+                    para realizar ferias de empleo, considerando condiciones
+                    sociales, desempleo, presencia empresarial y nivel educativo.
+                </p>
+
+                <span class="map-link">
+                    Ver mapa →
+                </span>
+
+            </a>
+
+
+            <!-- =========================
+                MAPA 2
+            ========================== -->
+
+            <a
+                class="map-card active"
+                href="pd_mun/index.html"
+            >
+
+                <span class="tag">
+                    Disponible
+                </span>
+
+                <h3>
+                    Población Desocupada por Municipio
+                </h3>
+
+                <p class = "map-description">
+                    Porcentaje de la Población Económicamente Activa
+                    (PEA) actualmente desocupada en los municipios de
+                    Yucatán.
+                </p>
+
+                <span class="map-link">
+                    Ver mapa →
+                </span>
+
+            </a>
+
+
+            <!-- =========================
+                MAPA 3
+            ========================== -->
+
+            <a
+                class="map-card active"
+                href="empresas_grandes_yuc/index.html"
+            >
+
+                <span class="tag">
+                    Disponible
+                </span>
+
+                <h3>
+                    Empresas Grandes en Yucatán
+                </h3>
+
+                <p class = "map-description">
+                    Ubicación de las grandes empresas en las siete
+                    regiones de Yucatán.
+                </p>
+
+                <span class="map-link">
+                    Ver mapa →
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+        Dirección de Análisis y Coordinación de Proyectos ·
+        Secretaría de Economía y Trabajo de Yucatán ·
+        2026
+    </footer>
+
 
 </body>
+
 </html>
